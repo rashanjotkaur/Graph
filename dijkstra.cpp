@@ -1,47 +1,37 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-typedef pair<int,int> pi;
-void dijkstra(vector <pi> adj[],int src,int n){
-	vector <int> vis(n+1,false);
-	vector <int> dis(n+1,INT_MAX);
-	priority_queue <pi,vector<pi>,greater<pi>> p;
-	
-	dis[src]=0;
-	p.push(make_pair(0,src));
-	while(!p.empty()){
-	    int u=p.top().second;
-	    p.pop();
-	    if(vis[u])  continue;
-	    vis[u]=true;
-	    for(auto it=adj[u].begin();it!=adj[u].end();it++){
-    	    int w=it->first;
-    	    int v=it->second;
-    	    if(!vis[v]){
-    	        if(dis[v]>dis[u]+w){
-    	            dis[v]=dis[u]+w;
-    	            p.push(make_pair(dis[v],v));
-    	        }
-    	    }
-    	}
-	}
-	for(int i=1;i<=n;i++)
-	    cout<<dis[i]<<" ";
-	cout<<endl; 
-}
-int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        int v;
-        cin>>v;
-        vector <pi> adj[v+1];
-        for(int i=1;i<=v;i++){
-            int j1=i+1;
-            int j2=3*i;
-            adj[i].push_back(make_pair(1,j1));
-            adj[i].push_back(make_pair(1,j2));
-        }
-        dijkstra(adj,1,v);
+#define ll long long int 
+typedef pair<ll, ll> pi; 
+#define INF 1000000000
+void dikstra(vector <pair<ll,ll>> adj[],ll src,ll v){
+    priority_queue< pi,vector <pi>,greater<pi> > pq; 
+    vector <ll> dis(v+1, INF); 
+    pq.push(make_pair(0, src)); 
+    dis[src] = 0; 
+    while (!pq.empty()){ 
+        ll min_vertex = pq.top().second; 
+        pq.pop(); 
+        for (auto it = adj[min_vertex].begin(); it!=adj[min_vertex].end();it++){ 
+            ll j = it->first; 
+            ll weight = it->second; 
+            if (dis[j] > dis[min_vertex] + weight){ 
+                dis[j] = dis[min_vertex] + weight; 
+                pq.push(make_pair(dis[j], j)); 
+            } 
+        } 
+    } 
+    for(ll i=2;i<=v;i++){
+        cout<<dis[i]<<" ";
     }
-	return 0; 
-} 
+}
+int main() {
+	ll v,e,a,b,w;
+    cin>>v>>e;
+    vector <pi> adj_list[v+1];
+    for(ll i=0;i<e;i++){
+        cin>>a>>b>>w;
+        adj_list[a].push_back(make_pair(b,w));
+    }
+    dikstra(adj_list,1,v);
+	return 0;
+}
